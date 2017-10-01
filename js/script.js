@@ -1,4 +1,5 @@
 var map;
+var infowindow;
 var bounds;
 
 //Information of different restaurants
@@ -10,6 +11,8 @@ var locations = [
     cityAddress: "New York, NY 10010",
     id: "bar0",
     fs_id: "5440ac89498e6faac0aa08a1",
+    visible: ko.observable(true),
+    boolTest: true
     },
     {
     title: "Buvette",
@@ -18,6 +21,8 @@ var locations = [
     cityAddress: "New York, NY 10014",
     id: "bar1",
     fs_id: "4d0bf7e3f29c236ac675bfe7",
+    visible: ko.observable(true),
+    boolTest: true
     },
     {
     title: "Marea",
@@ -26,6 +31,8 @@ var locations = [
     cityAddress: "New York, NY 10019",
     id: "bar2",
     fs_id: "4a0babaaf964a52007751fe3",
+    visible: ko.observable(true),
+    boolTest: true
     },
     {
     title: "Gramercy Tavern",
@@ -34,6 +41,8 @@ var locations = [
     cityAddress: "New York, NY 10003",
     id: "bar3",
     fs_id: "3fd66200f964a520aee91ee3",
+    visible: ko.observable(true),
+    boolTest: true
     },
     {
     title: "BCD Tofu House",
@@ -42,6 +51,8 @@ var locations = [
     cityAddress: "New York, NY 10001",
     id: "bar4",
     fs_id: "517563f9498e0a4859d08fe4",
+    visible: ko.observable(true),
+    boolTest: true
     },
     {
     title: "Maialino",
@@ -50,6 +61,8 @@ var locations = [
     cityAddress: "New York, NY 10010",
     id: "bar5",
     fs_id: "4afb2990f964a520a91b22e3",
+    visible: ko.observable(true),
+    boolTest: true
     },
     {
     title: "Momoya",
@@ -58,6 +71,8 @@ var locations = [
     cityAddress: "New York, NY 10011",
     id: "bar6",
     fs_id: "49d991d9f964a5204a5e1fe3",
+    visible: ko.observable(true),
+    boolTest: true
     },
     {
     title: "Le Bernardin",
@@ -66,6 +81,8 @@ var locations = [
     cityAddress: "New York, NY 10019",
     id: "bar7",
     fs_id: "3fd66200f964a52066e31ee3",
+    visible: ko.observable(true),
+    boolTest: true
     },
     {
     title: "Gabriel Kreuther",
@@ -74,6 +91,8 @@ var locations = [
     cityAddress: "New York, NY 10036",
     id: "bar8",
     fs_id: "5552087d498eb30c149f785a",
+    visible: ko.observable(true),
+    boolTest: true
     }
 ];
 
@@ -140,5 +159,140 @@ function initMap() {
     };
 
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+    infowindow = new google.maps.InfoWindow({
+        maxWidth: 250,
+        content: ""
+    });
     bounds = new google.maps.LatLngBounds();
+
+    // Close infowindow when clicked elsewhere on the map
+    map.addListener("click", function(){
+        infowindow.close(infowindow);
+    });
+
+    // Create restaurant object
+    var Restaurant = function (data, id, map) {
+        var self = this;
+        this.title = ko.observable(data.title);
+        this.location = data.location;
+        this.streetAddress = data.streetAddress;
+        this.cityAddress = data.cityAddress;
+        this.marker = "";
+        this.markerId = data.id;
+        this.fs_id = data.fs_id;
+        this.shortUrl = "";
+    };
+
+    // Get content infowindows
+    function getContent(restaurant) {
+        var contentString = '<img src="' + restaurant.googleStreetView +
+          '" alt="Street View Image of ' + restaurant.title + '"><h3>' +
+          restaurant.title + '</h3><a class="link" href="' + restaurant.shortUrl +
+          '" target="_blank">Explore more</a><img src="img/foursquare_logo.png">';
+        if (restaurant.title.length > 0) {
+          return contentString;
+          }
+    }
+
+    function ViewModel() {
+        var self = this;
+
+        // Creating items from the restaurant list
+        this.restaurantList = ko.observableArray();
+        locations.forEach(function(item){
+          self.restaurantList.push(new Restaurant(item));
+        });
+
+        // Create a marker per item
+        this.restaurantList().forEach(function(restaurant) {
+          var marker = new google.maps.Marker({
+            map: map,
+            position: restaurant.location,
+            animation: google.maps.Animation.DROP,
+            icon: {
+                url: 'img/dining_icon.png',
+                size: new google.maps.Size(50, 50),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(0, 50),
+            }
+          });
+          restaurant.marker = marker;
+          // Extend the boundaries of the map for each marker
+          bounds.extend(marker.position);
+          // Create an onclick event to open an infowindow and bounce the marker at each marker
+          marker.addListener("click", function(e) {
+            map.panTo(this.position);
+            infowindow.setContent(getContent(restaurant));
+            infowindow.open(map, marker);
+          });
+        });
+
+        //Get Google Street View Image for each location
+
+        self.getGoogleStreetView = ko.computed(function(){
+          self.restaurantList().forEach(function(restaurant) {
+            var streetViewUrl = 'https://maps.googleapis.com/maps/api/streetview?size=250x150&location=';
+            restaurant.googleStreetView = streetViewUrl + restaurant.location.lat + ',' + restaurant.location.lng + '&fov=120&pitch=0';
+          });
+        });
+        // Foursquare API request
+        self.getFoursquareData = ko.computed(function(){
+          self.restaurantList().forEach(function(restaurant) {
+
+            // Set initail variables to build the correct URL for each restaurant
+            var  venueId = restaurant.fs_id + "/?";
+            var foursquareUrl = BaseUrl + venueId + fsClient_id + fsClient_secret + fsVersion;
+
+            // AJAX call to Foursquare
+            var request = $.ajax({
+              type: "GET",
+              url: foursquareUrl,
+              dataType: "json",
+              cache: false,
+              success: function(data) {
+                var response = data.response ? data.response : "";
+                var venue = response.venue ? data.venue : "";
+                restaurant.title = response.venue["name"];
+                restaurant.shortUrl = response.venue["shortUrl"];
+              }
+            });
+
+          });
+        });
+
+
+        // Creating click for the list item
+        this.itemClick = function (restaurant) {
+          var markerId = restaurant.markerId;
+          google.maps.event.trigger(restaurant.marker, "click");
+        }
+
+
+        // Filtering the restaurant list
+        self.filter = ko.observable("");
+
+        this.filteredRestaurantList = ko.dependentObservable(function() {
+          var q = this.filter().toLowerCase();
+          //var self = this;
+          if (!q) {
+          // Return self.restaurantList() the original array;
+          return ko.utils.arrayFilter(self.restaurantList(), function(item) {
+            item.marker.setVisible(true);
+            return true;
+          });
+          } else {
+            return ko.utils.arrayFilter(this.restaurantList(), function(item) {
+              if (item.title.toLowerCase().indexOf(q) >= 0) {
+              return true;
+              } else {
+                item.marker.setVisible(false);
+              return false;
+              }
+            });
+          }
+        }, this);
+    };
+    // Activates knockout.js
+    ko.applyBindings(new ViewModel());
 };
