@@ -96,6 +96,12 @@ var locations = [
     }
 ];
 
+// Foursquare API Url parameter
+var BaseUrl = "https://api.foursquare.com/v2/venues/",
+    fsClient_id = "client_id=1MLSU0CSADQAGUXI3YAAKHJA2XWOYQZCMNF00UOJVYFRCABO",
+    fsClient_secret = "&client_secret=EMH23JNMX0DSDPGQRSINJ12MKZ3I34LNF5YQC53FP3A0LRBH",
+    fsVersion = "&v=20170801";
+
 //Initialize the map
 function initMap() {
     // Create a styles array for the map
@@ -256,6 +262,12 @@ function initMap() {
                 restaurant.title = response.venue["name"];
                 restaurant.shortUrl = response.venue["shortUrl"];
               }
+            });
+
+            // AJAX fail function
+
+            request.fail(function() {
+              alert('Foursquare could not be loaded.');
             });
 
           });
