@@ -201,6 +201,18 @@ function initMap() {
           }
     }
 
+    // Bounce effect on marker
+    function toggleBounce(marker) {
+        if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
+        } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+          setTimeout(function() {
+            marker.setAnimation(null);
+          }, 700);
+        }
+    };
+
     function ViewModel() {
         var self = this;
 
