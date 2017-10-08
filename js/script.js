@@ -320,3 +320,65 @@ function initMap() {
     // Activates knockout.js
     ko.applyBindings(new ViewModel());
 };
+
+//Hide or show sidebar on click
+var sideBarDisplay = true;
+function noSideBar() {
+    $("#side-bar").animate({
+                height: 0,
+            }, 500);
+            setTimeout(function() {
+                $("#side-bar").hide();
+            }, 500);
+            $("#arrow").attr("src", "img/click_down.gif");
+            sideBarDisplay = false;
+}
+function yesSideBar() {
+    $("#side-bar").show();
+            var listHeight = $("#list-container").height();
+            if($(window).height() < 400) {
+                $("#side-bar").animate({
+                    height: listHeight,
+                }, 400, function() {
+                    $(this).css('height','auto').css("max-height", 500);
+                });
+            } else {
+            $("#side-bar").animate({
+                height: listHeight,
+            }, 500, function() {
+                $(this).css('height','auto').css("max-height", 500);
+            });
+            }
+            $("#arrow").attr("src", "img/click_up.gif");
+            sideBarDisplay = true;
+}
+
+function hideBar() {
+    if(sideBarDisplay === true) {
+            noSideBar();
+
+    } else {
+            yesSideBar();
+    }
+}
+$("#arrow-bar").click(hideBar);
+
+//Hide or show sidebar if screen width is changed
+
+$(window).resize(function() {
+    var windowWidth = $(window).width();
+    if ($(window).width() < 640 && sideBarDisplay === true) {
+            noSideBar();
+        } else if($(window).height() < 500 && sideBarDisplay === true) {
+            noSideBar();
+        }
+    if ($(window).width() >= 640 && sideBarDisplay === false) {
+            if($(window).height() > 500) {
+                yesSideBar();
+            }
+        } else if($(window).height() >= 500 && sideBarDisplay === false) {
+            if($(window).width() > 640) {
+                yesSideBar();
+            }
+        }
+});
