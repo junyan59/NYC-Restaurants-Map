@@ -163,6 +163,12 @@ function initMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         mapTypeControl: false,
     };
+    if($(window).width() <= 1200) {
+        mapOptions.zoom = 12;
+    }
+    if ($(window).width() < 640) {
+        hideBar();
+    }
 
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
@@ -175,6 +181,24 @@ function initMap() {
     // Close infowindow when clicked elsewhere on the map
     map.addListener("click", function(){
         infowindow.close(infowindow);
+    });
+
+    //Responsive map
+    function responseMap() {
+        var windowWidth = $(window).width();
+        if(windowWidth <= 1200) {
+            map.setZoom(12);
+            map.setCenter(mapOptions.center);
+        } else if(windowWidth > 1200) {
+            map.setZoom(13);
+            map.setCenter(mapOptions.center);
+        }
+    }
+    $("#reset").click(function() {
+        responseMap();
+    });
+   $(window).resize(function() {
+        responseMap();
     });
 
     // Create restaurant object
@@ -243,6 +267,13 @@ function initMap() {
             map.panTo(this.position);
             infowindow.setContent(getContent(restaurant));
             infowindow.open(map, marker);
+            toggleBounce(marker);
+            var windowWidth = $(window).width();
+            if(windowWidth <= 1200) {
+              map.setZoom(13);
+            } else if(windowWidth > 1200) {
+              map.setZoom(15);
+            }
           });
         });
 
