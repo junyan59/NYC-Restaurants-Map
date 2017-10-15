@@ -220,8 +220,11 @@ function initMap() {
           '" alt="Street View Image of ' + restaurant.title + '"><h3>' +
           restaurant.title + '</h3><a class="link" href="' + restaurant.shortUrl +
           '" target="_blank">Explore more</a><img src="img/foursquare_logo.png">';
+        var errorString = "Oops, Foursquare Link not available."
         if (restaurant.title.length > 0) {
           return contentString;
+          } else {
+          return errorString;
           }
     }
 
