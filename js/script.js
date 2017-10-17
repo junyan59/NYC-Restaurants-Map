@@ -1,3 +1,6 @@
+// Whole-script strict mode syntax
+'use strict';
+
 var map;
 var infowindow;
 var bounds;
@@ -201,6 +204,7 @@ function initMap() {
         responseMap();
     });
 
+
     // Create restaurant object
     var Restaurant = function (data, id, map) {
         var self = this;
@@ -212,7 +216,7 @@ function initMap() {
         this.markerId = data.id;
         this.fs_id = data.fs_id;
         this.shortUrl = "";
-    };
+    }
 
     // Get content infowindows
     function getContent(restaurant) {
@@ -351,10 +355,10 @@ function initMap() {
           }
         }, this);
     };
+
     // Activates knockout.js
     ko.applyBindings(new ViewModel());
-};
-
+}
 //Hide or show sidebar on click
 var sideBarDisplay = true;
 function noSideBar() {
