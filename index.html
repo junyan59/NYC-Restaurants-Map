@@ -8,8 +8,41 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <style>
+        *:visited {color: #466db5}
+        html, body, #map {width: 100%; height: 100%; z-index: 1; position: absolute; margin: 0;}
+        li:hover {background-color: #f7f9ea; color: brown; cursor: pointer; }
+
+        a {text-decoration: none; color: grey;}
+    </style>
     <div id="map"></div>
     <div id="map-error" class="map-error"></div>
+    <div id="filter-container">
+        <div id="side-bar">
+            <h5>Filter results:</h5>
+            <br />
+            <form id="filter-form" class="filter-form">
+                <input id="filter-input" placeholder="Search from the list..." type=search data-bind="textInput: filter" autocomplete="off">
+                <button type="submit">Clear</button>
+            </form>
+            <br />
+            <div id="list-container">
+                <ul data-bind="foreach: filteredRestaurantList, visible: filteredRestaurantList().length > 0">
+                    <li>
+                        <h4 data-bind= "text: title, click: $root.itemClick"></h4>
+                        <h6 data-bind="text: streetAddress, click: $root.itemClick"></h6>
+                        <h6 data-bind="text: cityAddress, click: $root.itemClick"></h6>
+                        <br />
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <h2 id="arrow-bar">
+            <img id="arrow" src="img/click_up.gif" alt="arrow">NYC Restaurants Map
+        </h2>
+    </div>
+    <script src="js/lib/jquery-3.3.1.min.js"></script>
+    <script src="js/lib/knockout-3.4.2.js"></script>
     <script async src="js/script.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyA-hKWsrb5HtZf8Nk-aPY4-IxsVdCOCwxs&v=3&callback=initMap"></script>
 </body>
