@@ -40,6 +40,7 @@
         <h2 id="arrow-bar">
             <img id="arrow" src="img/click_up.gif" alt="arrow">NYC Restaurants Map
         </h2>
+
     </div>
     <div class="reset-map">
         <button id="reset">Reset</button>
@@ -47,6 +48,7 @@
     <script src="js/lib/jquery-3.3.1.min.js"></script>
     <script src="js/lib/knockout-3.4.2.js"></script>
     <script async src="js/script.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyA-hKWsrb5HtZf8Nk-aPY4-IxsVdCOCwxs&v=3&callback=initMap"></script>
+    <script src="js/maperror.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyA-hKWsrb5HtZf8Nk-aPY4-IxsVdCOCwxs&v=3&callback=initMap" onerror="mapError()"></script>
 </body>
 </html>
