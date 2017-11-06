@@ -41,3 +41,77 @@ p {
     font-weight: 300;
     font-size: 13px;
 }
+
+#filter-input {
+    height: 30px;
+    width: 250px;
+    font-size: 14px;
+    color: grey;
+}
+
+#filter-container {
+    position: absolute;
+    z-index: 10;
+}
+
+#side-bar {
+    width: 280px;
+    max-height: 500px;
+    background-color: #fcf9f9;
+    border: solid 2px #9bddbe;
+    opacity: 0.8;
+}
+
+#list-container {
+    max-height: 400px;
+    overflow: scroll;
+}
+
+#arrow {
+    height: 25px;
+    width: 40px;
+}
+
+#arrow-bar {
+    background-color: #7bb2a3;
+    opacity: 0.8;
+    cursor: pointer;
+    width: 280px;
+}
+
+.reset-map {
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    bottom: 1px;
+    float: left;
+    cursor: pointer;
+}
+
+#reset,
+#reset:focus {
+    height: 30px;
+    width: 60px;
+    float: left;
+    background-color: #7bb2a3;
+    color: brown;
+    border: solid 1px #f7f9ea;
+    font-size: 15px;
+
+}
+
+#reset:hover {
+    border: solid 1px #9bddbe;
+    background-color: #f7f9ea;
+    color: brown;
+    cursor: pointer;
+}
+
+.map-error {
+  max-width: 100%;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background: #fff9f9;
+  color: #5e4f46;
+}
