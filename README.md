@@ -11,15 +11,15 @@
 * The app's interface is intuitive to use. For example, the input text area to filter locations is easy to locate.
 * All data APIs load asynchronously and errors are handled gracefully.
 
-###How to View This App
+### How to View This App
 1. Test the app at: https://junyan59.github.io/NYC-Restaurant-Map/ or
-2. Download the source code from my repo at GitHub: https://github.com/junyan59/NYC-Restaurant-Map.git and open /index.html in your browser
+2. Download the source code from my repo at GitHub: https://github.com/junyan59/NYC-Restaurants-Map.git and open /index.html in your browser
 
 ### Libraries, frameworks and APIs applied
 1. Knockout JS
 2. Google Maps
 3. Foursquare
-4. JQuery
+4. jQuery
 5. AJAX
 
 ### Sources
