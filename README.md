@@ -12,8 +12,7 @@
 * All data APIs load asynchronously and errors are handled gracefully.
 
 ### How to View This App
-1. View the webpage here: https://junyan59.github.io/NYC-Restaurants-Map/
-2. Download the source code from my repo at GitHub: https://github.com/junyan59/NYC-Restaurants-Map.git and open `index.html` in your browser
+Download the source code from my repo at GitHub: https://github.com/junyan59/NYC-Restaurants-Map.git and open `index.html` in your browser
 
 ### Libraries, frameworks and APIs applied
 1. Knockout JS
