@@ -14,6 +14,9 @@
 ### How to View This App
 Download the source code from my repo at GitHub: https://github.com/junyan59/NYC-Restaurants-Map.git and open `index.html` in your browser
 
+A sample map:
+![Image of Main](./img/map.png)
+
 ### Libraries, frameworks and APIs applied
 1. Knockout JS
 2. Google Maps
